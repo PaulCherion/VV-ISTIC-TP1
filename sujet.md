@@ -10,4 +10,41 @@
 
 5.  Shortly after the appearance of WebAssembly another paper proposed a mechanized specification of the language using Isabelle. The paper can be consulted here: https://www.cl.cam.ac.uk/~caw77/papers/mechanising-and-verifying-the-webassembly-specification.pdf. This mechanized specification complements the first formalization attempt from the paper. According to the author of this second paper, what are the main advantages of the mechanized specification? Did it help improving the original formal specification of the language? What other artifacts were derived from this mechanized specification? How did the author verify the specification? Does this new specification removes the need for testing?
 
-## Answers
+# Answers
+
+## Question 1 : Trouver un bug et l’analyser
+
+Le bug de Mars Polar Lander était en fait une série d'erreurs de logiciels et de capteurs qui ont conduit à la perte de la sonde spatiale Mars Polar Lander de la NASA en 1999. Le module d'atterrissage de la sonde a été conçu pour atterrir sur la surface de Mars et mener des expériences scientifiques, mais il a échoué à atterrir correctement et a été détruit lors de l'impact.
+L'enquête sur la perte de la sonde a révélé que le logiciel de la sonde avait envoyé des informations erronées aux capteurs, faisant croire à l'ordinateur de bord que la sonde était beaucoup plus basse qu'elle ne l'était réellement. En conséquence, le module d'atterrissage a effectué une descente trop rapide et s'est écrasé sur la surface de Mars.
+Les répercussions du bug de Mars Polar Lander ont été importantes pour la NASA, car cela a entraîné la perte d'une mission coûteuse et importante pour la recherche scientifique.
+On  pourrait dire que le bug est local mais a eu un impact globale. 
+Le bug aurait pu être détecté si les tests avaient été correctement effectués. En effet pour gagner du temps les tests n’ont pas été totalement réalisé. 
+
+## Question 2 :
+
+### MultiSet.Entry::getCount() isn't 0 after removing the last element
+
+[[COLLECTIONS-709] MultiSet.Entry::getCount() isn't 0 after removing the last element - ASF JIRA](https://issues.apache.org/jira/browse/COLLECTIONS-709)
+
+Bug : Lors de la suppression du dernier élément d’un MultiSet.Entry<String>, le nombre d’élément présent n’est pas égal à 0 mais reste à 1. Le bug est dû à un oublie dans le traitement qui est différent (else).
+Ce bug est local car peut entraîner une erreur au sein de l’application sans pour autant entraîner le blocage de tout le fonctionnement. Il peut cependant devenir global si il est accompagné d’une mauvaise utilisation de la classe (boucle bloquante tant que getCount() n’est pas nul par exemple).
+  
+Solution : Ajout de la ligne `mut.value = 0;` (https://github.com/apache/commons-collections/pull/66/commits/8e2842abdd1584c4d23c62a11c9fc2277cf4d124). Un test a été rajouté pour vérifier ce comportement dans le futur.
+
+## Question 3 :
+
+Dans l'article, on apprend que Netflix utilise l'ingénierie du chaos pour améliorer la fiabilité de son système de diffusion de vidéos en continu. Les expériences qu'ils mènent consistent à simuler des pannes de serveurs, de réseaux et de centres de données dans leur environnement de production pour tester la capacité de leur système à y faire face. Les exigences pour ces expériences sont de s'assurer que cela n'affecte pas négativement l'expérience utilisateur et la sécurité des données, ainsi que de mesurer la capacité de Netflix à faire face à des pannes importantes. Les variables qu'ils observent comprennent la disponibilité du service, les temps de réponse et les mesures de capacité.
+Les résultats montrent que le système de diffusion de vidéos en continu de Netflix est capable de maintenir une disponibilité élevée même en cas de pannes importantes. Ils ont également identifié des domaines d'amélioration pour leur système, ce qui a permis d'optimiser leur système pour mieux résister aux pannes.
+D'autres entreprises, telles qu'Amazon et Google, ont également mis en place des programmes similaires pour tester la tolérance aux pannes de leurs systèmes.
+Les expériences pourraient être menées dans d'autres organisations en identifiant les principaux scénarios de pannes et en concevant des expériences qui simulent ces pannes. Les variables système à observer pendant les expériences peuvent inclure la disponibilité du service, les temps de réponse, la capacité et la sécurité des données. Les organisations peuvent également mettre en place des équipes dédiées à l'ingénierie du chaos pour concevoir et exécuter ces expériences de manière systématique.
+
+## Question 4 :
+
+WebAssembly est conçu pour être compatible avec les normes du web existantes, ce qui facilite son intégration dans les navigateurs web modernes. Cette compatibilité est rendue possible par une spécification claire et détaillée de la façon dont les programmes WebAssembly doivent être exécutés, ce qui permet aux développeurs de créer des programmes qui fonctionnent de manière fiable et prévisible sur toutes les plateformes prises en charge. Une spécification formelle pourrait donc contribuer à renforcer la compatibilité et la fiabilité de WebAssembly, en garantissant que tous les implémentations respectent un ensemble de règles précises et vérifiables. Cela pourrait également faciliter la maintenance et l'évolution de WebAssembly à mesure que de nouvelles fonctionnalités sont ajoutées ou que des bugs sont corrigés.
+Cela ne veut pas dire que les implémentations de WebAssembly n'ont pas besoin d'être testées. Même s'il y a une spécification formelle, il faut toujours tester les implémentations pour s'assurer qu'elles suivent la spécification et fonctionnent bien dans toutes les situations. Les tests sont importants pour identifier et corriger les erreurs de programmation, les bogues et les problèmes de performance qui peuvent survenir dans les implémentations réelles. En outre, les tests sont également nécessaires pour s'assurer que les programmes WebAssembly fonctionnent correctement sur toutes les plateformes et configurations possibles. En somme, une combinaison de spécification formelle et de tests rigoureux est nécessaire pour garantir la fiabilité et la qualité des implémentations de WebAssembly.
+
+## Question 5 :
+
+Selon l'auteur de l'article, la spécification mécanisée du langage WebAssembly présente plusieurs avantages, tels que la clarté, la précision et la confiance accrues dans la spécification formelle. De plus, elle a permis de générer des artefacts supplémentaires tels que des preuves de correction pour différentes fonctionnalités de WebAssembly.
+L'auteur a utilisé un outil de prouveur de théorème appelé Isabelle pour vérifier la spécification mécanisée et générer des preuves de correction automatiquement.
+Toutefois, la spécification mécanisée ne remplace pas les tests, car il est toujours essentiel de tester la mise en œuvre du langage pour s'assurer qu'elle fonctionne correctement. La spécification mécanisée sert plutôt de complément important pour améliorer la clarté et la précision de la spécification formelle du langage.
